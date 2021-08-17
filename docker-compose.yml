@@ -1,0 +1,33 @@
+version: '3.4'
+
+networks:
+  service_network:
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: notif-system-db
+    networks:
+      - service_network
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_DB=notifdb
+      - POSTGRES_USER=dbuser
+      - POSTGRES_PASSWORD=dbpassword
+
+  webapi:
+    image: ${DOCKER_REGISTRY-}webapi
+    container_name: notif-system-webapi
+    ports:
+      - 8080:80
+    networks:
+      - service_network
+    build:
+      context: .
+      dockerfile: src/WebApi/Dockerfile
+    depends_on:
+        - postgres
+    environment:
+      WAIT_HOSTS: postgres:5432
+      ConnectionStrings__DefaultConnection: "Host=postgres;Database=notifdb;Username=dbuser;Password=dbpassword"
