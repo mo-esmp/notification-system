@@ -76,6 +76,19 @@ namespace WebApi.Apis.V1.Controllers
         }
 
         /// <summary>
+        ///   Gets the user notification settings
+        /// </summary>
+        /// <response code="200">Notification settings</response>
+        [HttpGet("self/notification-settings")]
+        public async Task<UserNotificationSettingsDto> GetSettings()
+        {
+            var userId = User.GetId();
+            var settings = await _mediator.Send(new UserNotificationSettingsQuery(userId));
+
+            return settings;
+        }
+
+        /// <summary>
         ///   Login user via email and password
         /// </summary>
         /// <remarks>
@@ -123,7 +136,7 @@ namespace WebApi.Apis.V1.Controllers
         /// </summary>
         /// <response code="200">200 status code</response>
         ///<response code="400">If the posted body is not valid or server side validation failed</response>
-        [HttpPut("self/notifications")]
+        [HttpPut("self/notification-settings")]
         public async Task<IActionResult> Put(UserNotificationSettingsUpdateCommand command)
         {
             if (!ModelState.IsValid)

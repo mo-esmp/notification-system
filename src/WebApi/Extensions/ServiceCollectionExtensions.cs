@@ -150,6 +150,14 @@ namespace WebApi.Extensions
             else
                 services.AddDbContext<ApplicationDbContext, PostgresApplicationDbContext>();
 
+            services.AddCors(policy =>
+            {
+                policy.AddPolicy("CorsPolicy", opt => opt
+                    .AllowAnyOrigin()
+                    .AllowAnyHeader()
+                    .AllowAnyMethod());
+            });
+
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("ManagementOnly",

@@ -24,9 +24,9 @@ namespace WebApi.Infrastructure.Authentication.Jwt
             {
                 new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new(JwtClaimTypes.Subject, user.Id),
-                new(JwtClaimTypes.Name, user.UserName),
-                new(JwtClaimTypes.GivenName, user.FirstName),
-                new(JwtClaimTypes.FamilyName, user.LastName),
+                new(ClaimTypes.Name, user.UserName),
+                new(ClaimTypes.GivenName, user.FirstName),
+                new(ClaimTypes.Surname, user.LastName),
                 new("Department", department)
             };
 

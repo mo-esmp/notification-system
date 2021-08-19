@@ -49,6 +49,8 @@ namespace WebApi
                     options.SwaggerEndpoint($"/api-docs/{description.GroupName}/docs.json", description.GroupName.ToUpperInvariant());
             });
 
+            app.UseCors("CorsPolicy");
+
             app.UseRouting();
 
             app.UseAuthorization();

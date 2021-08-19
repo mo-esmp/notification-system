@@ -1,0 +1,48 @@
+﻿@page "/settings"
+@attribute [Authorize]
+
+<EditForm class="form-signin" OnValidSubmit="OnChangePasswordSubmit" Model="ChangePasswordModel">
+    <DataAnnotationsValidator />
+    <h4 class="font-weight-normal text-center">Change Password</h4>
+
+    <label for="currentPassowrd" class="sr-only">User Name</label>
+    <InputText type="password" id="currentPassowrd" class="form-control" placeholder="Current password" @bind-Value="ChangePasswordModel.CurrentPassword" autofocus />
+    <ValidationMessage For="@(() => ChangePasswordModel.CurrentPassword)" />
+
+    <label for="newPassword" class="sr-only">New Password</label>
+    <InputText type="password" id="newPassword" class="form-control" placeholder="New password" @bind-Value="ChangePasswordModel.NewPassword" />
+    <ValidationMessage For="@(() => ChangePasswordModel.NewPassword)" />
+
+    <label for="confirmNewPassword" class="sr-only">Confirm New Password</label>
+    <InputText type="password" id="confirmNewPassword" class="form-control" placeholder="Confirm password" @bind-Value="ChangePasswordModel.ConfirmNewPassword" />
+    <ValidationMessage For="@(() => ChangePasswordModel.ConfirmNewPassword)" />
+
+    <button class="btn btn-lg btn-primary btn-block" type="submit" disabled="@IsTaskRunning">Submit</button>
+
+    <label class="text-danger">@Error</label>
+    <label class="text-success">@Success</label>
+</EditForm>
+
+<hr />
+
+<div class="form-signin">
+    <h4 class="font-weight-normal text-center">Mute department notification</h4>
+
+    @foreach (var department in Departments)
+    {
+        var isChecked = MutedDepartmentIds.Contains(department.Id);
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" checked="@isChecked" value="@department.Id" id="@department.Type"
+                   @onchange="@(e => CheckboxChanged(e, department.Id))" />
+
+            <label class="form-check-label" for="@department.Type">
+                @department.Name
+            </label>
+        </div>
+    }
+    <br />
+    <button class="btn btn-lg btn-primary btn-block" type="submit" disabled="@IsTaskRunning" @onclick="OnChangeMuteSettingsSubmit">Submit</button>
+
+    <label class="text-danger">@Error2</label>
+    <label class="text-success">@Success2</label>
+</div>

@@ -82,7 +82,7 @@ namespace WebApi.Infrastructure.CommandHandlers.V1
             var notificationSettings = await _context.UserNotificationSettings.FindAsync(request.UserId);
 
             notificationSettings ??= new UserNotificationSetting { UserId = request.UserId };
-            notificationSettings.MutedDepartmentsNotificationIds = request.MutedDepartments;
+            notificationSettings.MutedDepartmentsNotificationIds = request.MutedDepartmentIds;
 
             if (_context.Entry(notificationSettings).State == EntityState.Detached)
                 _context.UserNotificationSettings.Add(notificationSettings);

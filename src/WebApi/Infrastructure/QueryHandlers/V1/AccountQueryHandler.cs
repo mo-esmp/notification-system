@@ -12,6 +12,7 @@ namespace WebApi.Infrastructure.QueryHandlers
 {
     public class AccountQueryHandler :
         IRequestHandler<UserNotificationQuery, NotificationDto>,
+        IRequestHandler<UserNotificationSettingsQuery, UserNotificationSettingsDto>,
         IRequestHandler<UserUnMutedNotificationSummariesQuery, IEnumerable<NotificationSummaryDto>>,
         IRequestHandler<UserMutedNotificationSummariesQuery, IEnumerable<NotificationSummaryDto>>
     {
@@ -37,6 +38,16 @@ namespace WebApi.Infrastructure.QueryHandlers
                                       }).FirstOrDefaultAsync(cancellationToken);
 
             return notification;
+        }
+
+        public async Task<UserNotificationSettingsDto> Handle(UserNotificationSettingsQuery request, CancellationToken cancellationToken)
+        {
+            var ids = await _context.UserNotificationSettings
+                .Where(u => u.UserId == request.UserId)
+                .Select(u => u.MutedDepartmentsNotificationIds)
+                .FirstOrDefaultAsync(cancellationToken);
+
+            return new() { MutedDepartmentIds = ids };
         }
 
         public Task<IEnumerable<NotificationSummaryDto>> Handle(UserUnMutedNotificationSummariesQuery request, CancellationToken cancellationToken)
